@@ -31,7 +31,7 @@ LOG_MODULE_REGISTER(zros_topic);
         (imu, &topic_imu, "imu"),                                              \
         (joy, &topic_joy, "joy"),                                              \
         (led_array, &topic_led_array, "led_array"),                            \
-        (status, &topic_status, "status"),
+        (status, &topic_status, "status")
 
 int topic_count_hz(const struct shell* sh, struct zros_topic* topic, void* msg, snprint_t* echo)
 {
