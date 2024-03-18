@@ -239,7 +239,7 @@ static void fsm_update(synapse_msgs_Status* status, const status_input_t* input)
     status->header.seq++;
 }
 
-static void status_add_extra_info(synapse_msgs_Status* status, status_input_t* input, const context* ctx)
+static void status_add_extra_info(synapse_msgs_Status* status, status_input_t* input)
 {
     if (input->fuel_critical) {
         status->fuel = synapse_msgs_Status_Fuel_FUEL_CRITICAL;
@@ -297,7 +297,7 @@ static void b3rb_fsm_entry_point(void* p0, void* p1, void* p2)
         // perform processing
         fsm_compute_input(&ctx->status_input, ctx);
         fsm_update(&ctx->status, &ctx->status_input);
-        status_add_extra_info(&ctx->status, &ctx->status_input, ctx);
+        status_add_extra_info(&ctx->status, &ctx->status_input);
         zros_pub_update(&ctx->pub_status);
     }
 }
