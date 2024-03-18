@@ -248,10 +248,6 @@ static void status_add_extra_info(synapse_msgs_Status* status, status_input_t* i
     } else {
         status->fuel = synapse_msgs_Status_Fuel_FUEL_NOMINAL;
     }
-    float bat_max = CONFIG_CEREBRI_B3RB_BATTERY_MAX_MILLIVOLT / 1000.0;
-    float bat_min = CONFIG_CEREBRI_B3RB_BATTERY_MIN_MILLIVOLT / 1000.0;
-    status->fuel_percentage = 100 * (ctx->battery_state.voltage - bat_min) / (bat_max - bat_min);
-    status->power = ctx->battery_state.voltage * ctx->battery_state.current;
 }
 
 static void b3rb_fsm_entry_point(void* p0, void* p1, void* p2)
