@@ -99,9 +99,6 @@ static void lighting_work_handler(struct k_work* work)
     const double color_armed[] = { 1, 0, 0 };
     const double color_disarmed[] = { 0, 1, 0 };
 
-    const int safety_leds[] = { 0, 5 };
-    const double color_unsafe[] = { 1, 0, 0 };
-    const double color_safe[] = { 0, 1, 0 };
     const double color_calibration[] = { 1, 1, 0 };
 
     const int headlight_leds[] = { 6, 7, 8, 9, 10, 11 };
