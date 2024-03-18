@@ -14,6 +14,9 @@
 #include <synapse_protobuf/status.pb.h>
 #include <synapse_protobuf/time.pb.h>
 #include <synapse_protobuf/twist.pb.h>
+#include <synapse_protobuf/twist_with_covariance.pb.h>
+#include <synapse_protobuf/point.pb.h>
+#include <synapse_protobuf/pose_with_covariance.pb.h>
 
 /********************************************************************
  * helper
