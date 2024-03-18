@@ -4,12 +4,6 @@
 mainmenu "CogniPilot - Cerebri - B3RB"
 source "Kconfig.zephyr"
 
-config CEREBRI_B3RB_ESTIMATE
-  bool "enable estimate"
-  depends on CEREBRI_B3RB_CASADI
-  help
-    Enable estimator
-
 config CEREBRI_B3RB_FSM
   bool "enable finite state machine"
   help
@@ -30,12 +24,6 @@ config CEREBRI_B3RB_MIXING
   bool "enable mixing"
   help
     Enable mixing
-
-config CEREBRI_B3RB_POSITION
-  bool "enable position"
-  depends on CEREBRI_B3RB_CASADI
-  help
-    Enable position
 
 config CEREBRI_B3RB_VELOCITY
   bool "enable velocity"

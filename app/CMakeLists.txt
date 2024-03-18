@@ -21,10 +21,6 @@ if (CONFIG_CEREBRI_B3RB_FSM)
   list(APPEND SOURCE_FILES src/fsm.c)
 endif()
 
-if (CONFIG_CEREBRI_B3RB_ESTIMATE)
-  list(APPEND SOURCE_FILES src/estimate.c)
-endif()
-
 if (CONFIG_CEREBRI_B3RB_MIXING)
   list(APPEND SOURCE_FILES src/mixing.c)
 endif()
@@ -35,11 +31,6 @@ endif()
 
 if (CONFIG_CEREBRI_B3RB_MANUAL)
   list(APPEND SOURCE_FILES src/manual.c)
-endif()
-
-if (CONFIG_CEREBRI_B3RB_POSITION)
-  list(APPEND SOURCE_FILES
-    src/position.c)
 endif()
 
 if (CONFIG_CEREBRI_B3RB_VELOCITY)

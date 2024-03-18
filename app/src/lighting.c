@@ -33,13 +33,11 @@ typedef struct context_ {
     // node
     struct zros_node node;
     // data
-    synapse_msgs_BatteryState battery_state;
-    synapse_msgs_Safety safety;
     synapse_msgs_Status status;
     synapse_msgs_LEDArray led_array;
     synapse_msgs_Joy joy;
     // subscriptions
-    struct zros_sub sub_battery_state, sub_safety, sub_status, sub_joy;
+    struct zros_sub sub_status, sub_joy;
     // publications
     struct zros_pub pub_led_array;
     bool lights_on;
@@ -48,11 +46,8 @@ typedef struct context_ {
 static context_t g_ctx = {
     .work_item = Z_WORK_INITIALIZER(lighting_work_handler),
     .timer = Z_TIMER_INITIALIZER(g_ctx.timer, lighting_timer_handler, NULL),
-    .battery_state = synapse_msgs_BatteryState_init_default,
-    .safety = synapse_msgs_Safety_init_default,
     .status = synapse_msgs_Status_init_default,
     .led_array = synapse_msgs_LEDArray_init_default,
-    .sub_safety = {},
     .sub_status = {},
     .sub_joy = {},
     .pub_led_array = {},
@@ -63,8 +58,6 @@ static context_t g_ctx = {
 static void lighting_init(context_t* ctx)
 {
     zros_node_init(&ctx->node, "b3rb_lighting");
-    zros_sub_init(&ctx->sub_battery_state, &ctx->node, &topic_battery_state, &ctx->battery_state, 10);
-    zros_sub_init(&ctx->sub_safety, &ctx->node, &topic_safety, &ctx->safety, 10);
     zros_sub_init(&ctx->sub_status, &ctx->node, &topic_status, &ctx->status, 10);
     zros_sub_init(&ctx->sub_joy, &ctx->node, &topic_joy, &ctx->joy, 10);
     zros_pub_init(&ctx->pub_led_array, &ctx->node, &topic_led_array, &ctx->led_array);
@@ -85,8 +78,6 @@ static void lighting_work_handler(struct k_work* work)
     // update subscriptions
     zros_sub_update(&ctx->sub_status);
     zros_sub_update(&ctx->sub_joy);
-    zros_sub_update(&ctx->sub_safety);
-    zros_sub_update(&ctx->sub_battery_state);
 
     double t = k_uptime_ticks() / ((double)CONFIG_SYS_CLOCK_TICKS_PER_SEC);
     const double led_pulse_freq = 0.25;
@@ -152,20 +143,6 @@ static void lighting_work_handler(struct k_work* work)
             }
         }
         set_led(arm_leds[i], color, brightness, &ctx->led_array.led[led_msg_index]);
-        led_msg_index++;
-    }
-
-    // safety leds
-    for (size_t i = 0; i < ARRAY_SIZE(safety_leds); i++) {
-        const double* color = NULL;
-        if (ctx->safety.status == synapse_msgs_Safety_Status_SAFETY_SAFE) {
-            color = color_safe;
-        } else if (ctx->safety.status == synapse_msgs_Safety_Status_SAFETY_UNSAFE) {
-            color = color_unsafe;
-        } else {
-            color = color_unknown;
-        }
-        set_led(safety_leds[i], color, brightness, &ctx->led_array.led[led_msg_index]);
         led_msg_index++;
     }
 
