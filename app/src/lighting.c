@@ -102,13 +102,10 @@ static void lighting_work_handler(struct k_work* work)
     const int safety_leds[] = { 0, 5 };
     const double color_unsafe[] = { 1, 0, 0 };
     const double color_safe[] = { 0, 1, 0 };
-    const double color_battery_critical[] = { 1, 0.65, 0 };
     const double color_calibration[] = { 1, 1, 0 };
 
     const int headlight_leds[] = { 6, 7, 8, 9, 10, 11 };
     const double color_white[] = { 1, 1, 1 };
-
-    bool battery_critical = ctx->battery_state.voltage < CONFIG_CEREBRI_B3RB_BATTERY_MIN_MILLIVOLT / 1000.0;
 
     // mode leds
     for (size_t i = 0; i < ARRAY_SIZE(mode_leds); i++) {
@@ -131,17 +128,15 @@ static void lighting_work_handler(struct k_work* work)
     // arm leds
     for (size_t i = 0; i < ARRAY_SIZE(arm_leds); i++) {
         const double* color = NULL;
-        if (battery_critical) {
-            color = color_battery_critical;
+
+        if (ctx->status.arming == synapse_msgs_Status_Arming_ARMING_DISARMED) {
+            color = color_disarmed;
+        } else if (ctx->status.arming == synapse_msgs_Status_Arming_ARMING_ARMED) {
+            color = color_armed;
         } else {
-            if (ctx->status.arming == synapse_msgs_Status_Arming_ARMING_DISARMED) {
-                color = color_disarmed;
-            } else if (ctx->status.arming == synapse_msgs_Status_Arming_ARMING_ARMED) {
-                color = color_armed;
-            } else {
-                color = color_unknown;
-            }
+            color = color_unknown;
         }
+
         set_led(arm_leds[i], color, brightness, &ctx->led_array.led[led_msg_index]);
         led_msg_index++;
     }
