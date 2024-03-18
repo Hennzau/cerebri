@@ -13,7 +13,7 @@ endif()
 
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
-project(b3rb LANGUAGES C)
+project(. LANGUAGES C)
 
 set(SOURCE_FILES src/main.c)
 
@@ -35,12 +35,12 @@ endif()
 
 if (CONFIG_CEREBRI_B3RB_VELOCITY)
   list(APPEND SOURCE_FILES
-    src/velocity.c)
+          src/velocity.c)
 endif()
 
 if (CONFIG_CEREBRI_B3RB_CASADI)
   list(APPEND SOURCE_FILES
-    src/casadi/gen/b3rb.c)
+          src/casadi/gen/b3rb.c)
 endif()
 
 set(flags
@@ -81,7 +81,7 @@ set_source_files_properties(
   )
 
 set_source_files_properties(
-  src/casadi/gen/b3rb.c
+        src/casadi/gen/b3rb.c
   PROPERTIES COMPILE_FLAGS
   "${flags}\
   -Wno-unused-parameter\

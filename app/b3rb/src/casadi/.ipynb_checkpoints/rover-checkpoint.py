@@ -355,7 +355,7 @@ if __name__ == "__main__":
     #plt.show()
     #test_bezier()
     
-    dest_dir = '.'
+    dest_dir = ''
 
     # derivate casadi functions
     bezier6 = derive_bezier6()
@@ -369,4 +369,4 @@ if __name__ == "__main__":
     eqs.update(derive_se2())
     eqs.update(derive_rover2d_estimator())
 
-    generate_code(eqs, filename="rover.c", dest_dir=".")
+    generate_code(eqs, filename="rover.c", dest_dir="")
