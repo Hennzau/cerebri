@@ -7,7 +7,6 @@ rsource "synapse/Kconfig"
 
 rsource "actuate/Kconfig"
 rsource "core/Kconfig"
-rsource "dream/Kconfig"
 rsource "sense/Kconfig"
 
 endmenu
