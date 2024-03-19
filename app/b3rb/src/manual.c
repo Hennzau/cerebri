@@ -49,7 +49,7 @@ static void init(context* ctx)
     zros_node_init(&ctx->node, "b3rb_manual");
     zros_sub_init(&ctx->sub_joy, &ctx->node, &topic_joy, &ctx->joy, 10);
     zros_pub_init(&ctx->pub_actuators_manual, &ctx->node,
-        &topic_actuators_manual, &ctx->actuators_manual);
+        &topic_actuators, &ctx->actuators_manual);
 }
 
 static void b3rb_manual_entry_point(void* p0, void* p1, void* p2)
