@@ -21,23 +21,6 @@ if (CONFIG_CEREBRI_B3RB_FSM)
   list(APPEND SOURCE_FILES src/fsm.c)
 endif()
 
-if (CONFIG_CEREBRI_B3RB_MIXING)
-  list(APPEND SOURCE_FILES src/mixing.c)
-endif()
-
-if (CONFIG_CEREBRI_B3RB_LIGHTING)
-  list(APPEND SOURCE_FILES src/lighting.c)
-endif()
-
-if (CONFIG_CEREBRI_B3RB_MANUAL)
-  list(APPEND SOURCE_FILES src/manual.c)
-endif()
-
-if (CONFIG_CEREBRI_B3RB_VELOCITY)
-  list(APPEND SOURCE_FILES
-          src/velocity.c)
-endif()
-
 if (CONFIG_CEREBRI_B3RB_CASADI)
   list(APPEND SOURCE_FILES
           src/casadi/gen/b3rb.c)

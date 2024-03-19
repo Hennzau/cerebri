@@ -9,29 +9,6 @@ config CEREBRI_B3RB_FSM
   help
     Enable fintie state machine
 
-config CEREBRI_B3RB_LIGHTING
-  bool "enable lighting"
-  help
-    Enable lighting
-
-config CEREBRI_B3RB_MANUAL
-  bool "enable manual"
-  depends on CEREBRI_B3RB_MIXING
-  help
-    Enable manual
-
-config CEREBRI_B3RB_MIXING
-  bool "enable mixing"
-  help
-    Enable mixing
-
-config CEREBRI_B3RB_VELOCITY
-  bool "enable velocity"
-  depends on CEREBRI_B3RB_MIXING
-  depends on CEREBRI_B3RB_CASADI
-  help
-    Enable velocity
-
 config CEREBRI_B3RB_CASADI
   bool "enable casadi code"
   help
