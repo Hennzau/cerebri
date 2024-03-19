@@ -170,27 +170,6 @@ static void fsm_update(synapse_msgs_Status* status, const status_input_t* input)
         &status->request_seq, &status->request_rejected, // request
         0); // guards
 
-    // disarm transitions
-    transition(
-        &status->arming, // state
-        input->fuel_critical, // request
-        "disarm fuel critical", // label
-        synapse_msgs_Status_Arming_ARMING_ARMED, // pre
-        synapse_msgs_Status_Arming_ARMING_DISARMED, // post
-        status->status_message, sizeof(status->status_message), // status
-        &status->request_seq, &status->request_rejected, // request
-        0); // guards
-
-    transition(
-        &status->arming, // state
-        input->safe, // request
-        "disarm safety engaged", // label
-        synapse_msgs_Status_Arming_ARMING_ARMED, // pre
-        synapse_msgs_Status_Arming_ARMING_DISARMED, // post
-        status->status_message, sizeof(status->status_message), // status
-        &status->request_seq, &status->request_rejected, // request
-        0); // guards
-
     // mode transitions
     transition(
         &status->mode, // state

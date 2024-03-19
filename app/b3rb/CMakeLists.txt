@@ -17,14 +17,11 @@ project(. LANGUAGES C)
 
 set(SOURCE_FILES src/main.c)
 
-if (CONFIG_CEREBRI_B3RB_FSM)
-  list(APPEND SOURCE_FILES src/fsm.c)
-endif()
+list(APPEND SOURCE_FILES src/fsm.c)
+list(APPEND SOURCE_FILES src/manual.c)
 
-if (CONFIG_CEREBRI_B3RB_CASADI)
-  list(APPEND SOURCE_FILES
-          src/casadi/gen/b3rb.c)
-endif()
+list(APPEND SOURCE_FILES
+        src/casadi/gen/b3rb.c)
 
 set(flags
   -std=c11
