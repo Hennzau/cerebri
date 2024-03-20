@@ -62,8 +62,15 @@ static void b3rb_auto_entry_point(void* p0, void* p1, void* p2)
 
     init(ctx);
 
-    while (true) {
+    struct k_poll_event events[] = {
+    };
 
+    while (true) {
+        k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
+
+        // compute turn_angle, and angular velocity from joystick
+
+        zros_pub_update(&ctx->pub_actuators);
     }
 }
 
