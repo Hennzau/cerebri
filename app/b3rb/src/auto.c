@@ -37,10 +37,10 @@ typedef struct _context {
 
 static context g_ctx = {
     .node = {},
-    .joy = synapse_msgs_Joy_init_default,
-    .actuators = synapse_msgs_Actuators_init_default,
-    .sub_joy = {},
+
     .pub_actuators = {},
+    .actuators = synapse_msgs_Actuators_init_default,
+
     .wheel_radius = CONFIG_CEREBRI_B3RB_WHEEL_RADIUS_MM / 1000.0,
     .max_turn_angle = CONFIG_CEREBRI_B3RB_MAX_TURN_ANGLE_MRAD / 1000.0,
     .max_velocity = CONFIG_CEREBRI_B3RB_MAX_VELOCITY_MM_S / 1000.0,
