@@ -48,10 +48,8 @@ struct context {
     struct zros_node node;
     // subscriptions
     struct zros_sub
-        sub_actuators,
         sub_status;
     // topic data
-    synapse_msgs_Actuators actuators;
     synapse_msgs_Status status;
     // connections
     struct udp_tx udp;
@@ -99,11 +97,6 @@ static int init(struct context* ctx)
     zros_node_init(&ctx->node, "syn_eth_tx");
 
     // initialize node subscriptions
-    ret = zros_sub_init(&ctx->sub_actuators, &ctx->node, &topic_actuators, &ctx->actuators, 15);
-    if (ret < 0) {
-        LOG_ERR("init actuators failed: %d", ret);
-        return ret;
-    }
 
     ret = zros_sub_init(&ctx->sub_status, &ctx->node, &topic_status, &ctx->status, 15);
     if (ret < 0) {
@@ -137,7 +130,6 @@ static int fini(struct context* ctx)
     ret = udp_tx_fini(&ctx->udp);
 
     // close subscriptions
-    zros_sub_fini(&ctx->sub_actuators);
     zros_sub_fini(&ctx->sub_status);
 
     return ret;

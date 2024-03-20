@@ -28,8 +28,6 @@ struct context {
     struct udp_rx udp;
     TinyFrame tf;
     atomic_t running;
-    struct zros_sub sub_status;
-    synapse_msgs_Status status;
 };
 
 static struct context g_ctx;
@@ -51,7 +49,6 @@ static struct context g_ctx;
 
 // topic listeners
 TOPIC_LISTENER(joy, synapse_msgs_Joy)
-TOPIC_LISTENER(clock_offset, synapse_msgs_Time)
 
 static TF_Result genericListener(TinyFrame* tf, TF_Msg* msg)
 {
@@ -81,23 +78,12 @@ static int init(struct context* ctx)
     }
     ctx->tf.userdata = ctx;
 
-    // add zros subscribers
-    ret = zros_sub_init(&ctx->sub_status, &ctx->node, &topic_status, &ctx->status, 1);
-    if (ret < 0) {
-        LOG_ERR("sub status init failed: %d", ret);
-        return ret;
-    }
-
     // add tinyframe listeners
     ret = TF_AddGenericListener(&ctx->tf, genericListener);
     if (ret < 0)
         return ret;
 
     ret = TF_AddTypeListener(&ctx->tf, SYNAPSE_JOY_TOPIC, joy_listener);
-    if (ret < 0)
-        return ret;
-
-    ret = TF_AddTypeListener(&ctx->tf, SYNAPSE_CLOCK_OFFSET_TOPIC, clock_offset_listener);
     if (ret < 0)
         return ret;
 
@@ -143,11 +129,6 @@ static void run(void* p0, void* p1, void* p2)
             LOG_ERR("connection error: %d", errno);
         } else if (received > 0) {
             TF_Accept(&ctx->tf, ctx->udp.rx_buf, received);
-        }
-
-        // update status
-        if (zros_sub_update_available(&ctx->sub_status)) {
-            zros_sub_update(&ctx->sub_status);
         }
 
         // tell tinyframe time has passed

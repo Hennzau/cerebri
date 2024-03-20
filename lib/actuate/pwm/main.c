@@ -139,11 +139,6 @@ void actuate_pwm_entry_point(void* p0, void* p1, void* p2)
         rc = k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
         if (rc != 0) {
             LOG_DBG("no actuator message received");
-            // put motors in disarmed state
-            if (ctx->status.arming == synapse_msgs_Status_Arming_ARMING_ARMED) {
-                ctx->status.arming = synapse_msgs_Status_Arming_ARMING_DISARMED;
-                LOG_ERR("disarming motors due to actuator msg timeout!");
-            }
         }
 
         if (zros_sub_update_available(&ctx->sub_status)) {

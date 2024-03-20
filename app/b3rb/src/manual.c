@@ -24,10 +24,13 @@ LOG_MODULE_REGISTER(b3rb_manual, CONFIG_CEREBRI_B3RB_LOG_LEVEL);
 
 typedef struct _context {
     struct zros_node node;
-    synapse_msgs_Joy joy;
-    synapse_msgs_Actuators actuators_manual;
+
     struct zros_sub sub_joy;
     struct zros_pub pub_actuators_manual;
+
+    synapse_msgs_Joy joy;
+    synapse_msgs_Actuators actuators_manual;
+
     const double wheel_radius;
     const double max_turn_angle;
     const double max_velocity;
