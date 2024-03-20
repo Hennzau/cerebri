@@ -94,7 +94,7 @@ static void b3rb_movement_entry_point(void* p0, void* p1, void* p2)
         *zros_sub_get_event(&ctx->sub_actuators_auto),
     };
 
-    while (true)
+    while (true) {
         k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
 
         if (zros_sub_update_available(&ctx->sub_status)) {
