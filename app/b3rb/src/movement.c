@@ -88,7 +88,15 @@ static void b3rb_movement_entry_point(void* p0, void* p1, void* p2)
 
     init(ctx);
 
-    while (true) {
+    struct k_poll_event events[] = {
+        *zros_sub_get_event(&ctx->sub_status),
+        *zros_sub_get_event(&ctx->sub_actuators_manual),
+        *zros_sub_get_event(&ctx->sub_actuators_auto),
+    };
+
+    while (true)
+        k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
+
         if (zros_sub_update_available(&ctx->sub_status)) {
             zros_sub_update(&ctx->sub_status);
         }
