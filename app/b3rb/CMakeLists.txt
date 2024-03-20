@@ -20,6 +20,7 @@ set(SOURCE_FILES src/main.c)
 list(APPEND SOURCE_FILES src/fsm.c)
 list(APPEND SOURCE_FILES src/mixing.c)
 list(APPEND SOURCE_FILES src/manual.c)
+list(APPEND SOURCE_FILES src/auto.c)
 list(APPEND SOURCE_FILES src/lighting.c)
 
 list(APPEND SOURCE_FILES
