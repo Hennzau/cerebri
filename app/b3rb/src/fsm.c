@@ -1,6 +1,8 @@
 /*
  * Copyright CogniPilot Foundation 2023
  * SPDX-License-Identifier: Apache-2.0
+
+	Ce node ZROS est relié à l'interface de contrôle via le topic "JOY" (pour "JOYSTICK"). 
  */
 
 #include <stdio.h>

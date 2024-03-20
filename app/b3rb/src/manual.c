@@ -29,7 +29,7 @@ typedef struct _context {
     struct zros_pub pub_actuators;
 
     synapse_msgs_Joy joy;
-    synapse_msgs_Actuators actuators_manual;
+    synapse_msgs_Actuators actuators;
 
     const double wheel_radius;
     const double max_turn_angle;
@@ -39,7 +39,7 @@ typedef struct _context {
 static context g_ctx = {
     .node = {},
     .joy = synapse_msgs_Joy_init_default,
-    .actuators_manual = synapse_msgs_Actuators_init_default,
+    .actuators = synapse_msgs_Actuators_init_default,
     .sub_joy = {},
     .pub_actuators = {},
     .wheel_radius = CONFIG_CEREBRI_B3RB_WHEEL_RADIUS_MM / 1000.0,
@@ -52,7 +52,7 @@ static void init(context* ctx)
     zros_node_init(&ctx->node, "b3rb_manual");
     zros_sub_init(&ctx->sub_joy, &ctx->node, &topic_joy, &ctx->joy, 10);
     zros_pub_init(&ctx->pub_actuators, &ctx->node,
-        &topic_actuators, &ctx->actuators_manual);
+        &topic_actuators_manual, &ctx->actuators);
 }
 
 static void b3rb_manual_entry_point(void* p0, void* p1, void* p2)
@@ -70,11 +70,8 @@ static void b3rb_manual_entry_point(void* p0, void* p1, void* p2)
 
     while (true) {
         // wait for joystick input event, publish at 1 Hz regardless
-        int rc = 0;
-        rc = k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
-        if (rc != 0) {
-            // LOG_DBG("manual not receiving joy");
-        }
+
+        int rc_ = k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
 
         if (zros_sub_update_available(&ctx->sub_joy)) {
             zros_sub_update(&ctx->sub_joy);
@@ -83,7 +80,7 @@ static void b3rb_manual_entry_point(void* p0, void* p1, void* p2)
         // compute turn_angle, and angular velocity from joystick
         double turn_angle = ctx->max_turn_angle * ctx->joy.axes[JOY_AXES_ROLL];
         double omega_fwd = ctx->max_velocity * ctx->joy.axes[JOY_AXES_THRUST] / ctx->wheel_radius;
-        b3rb_set_actuators(&ctx->actuators_manual, turn_angle, omega_fwd);
+        b3rb_set_actuators(&ctx->actuators, turn_angle, omega_fwd);
 
         zros_pub_update(&ctx->pub_actuators);
     }

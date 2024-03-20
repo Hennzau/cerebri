@@ -67,14 +67,20 @@ const char* status_joy_str(synapse_msgs_Status_Joy joy)
 /********************************************************************
  * topics
  ********************************************************************/
+ZROS_TOPIC_DEFINE(actuators_manual, synapse_msgs_Actuators);
+ZROS_TOPIC_DEFINE(actuators_auto, synapse_msgs_Actuators);
 ZROS_TOPIC_DEFINE(actuators, synapse_msgs_Actuators);
+
 ZROS_TOPIC_DEFINE(status, synapse_msgs_Status);
 ZROS_TOPIC_DEFINE(imu, synapse_msgs_Imu);
 ZROS_TOPIC_DEFINE(joy, synapse_msgs_Joy);
 ZROS_TOPIC_DEFINE(led_array, synapse_msgs_LEDArray);
 
 static struct zros_topic* topic_list[] = {
+    &topic_actuators_manual,
+    &topic_actuators_auto,
     &topic_actuators,
+
     &topic_status,
     &topic_imu,
     &topic_joy,

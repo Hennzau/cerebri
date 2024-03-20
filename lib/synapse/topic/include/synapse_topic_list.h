@@ -51,8 +51,12 @@ enum {
 /********************************************************************
  * topics
  ********************************************************************/
-ZROS_TOPIC_DECLARE(topic_actuators, synapse_msgs_Actuators);
-ZROS_TOPIC_DECLARE(topic_imu, synapse_msgs_Imu);
+
+ZROS_TOPIC_DECLARE(topic_actuators_manual, synapse_msgs_Actuators); // Actuators from manual mode
+ZROS_TOPIC_DECLARE(topic_actuators_auto, synapse_msgs_Actuators); // Actuators from auto mode
+ZROS_TOPIC_DECLARE(topic_actuators, synapse_msgs_Actuators); // Actuators sent to motors (actuate/pwm node)
+
+ZROS_TOPIC_DECLARE(topic_imu, synapse_msgs_Imu); // Actuators received from
 ZROS_TOPIC_DECLARE(topic_joy, synapse_msgs_Joy);
 ZROS_TOPIC_DECLARE(topic_led_array, synapse_msgs_LEDArray);
 ZROS_TOPIC_DECLARE(topic_status, synapse_msgs_Status);
