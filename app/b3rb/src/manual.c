@@ -71,7 +71,7 @@ static void b3rb_manual_entry_point(void* p0, void* p1, void* p2)
     while (true) {
         // wait for joystick input event, publish at 1 Hz regardless
 
-        int rc_ = k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
+        k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
 
         if (zros_sub_update_available(&ctx->sub_joy)) {
             zros_sub_update(&ctx->sub_joy);
