@@ -7,6 +7,7 @@
 
 #include <zros/zros_topic.h>
 
+#include <synapse_protobuf/actuators.pb.h>
 #include <synapse_protobuf/imu.pb.h>
 #include <synapse_protobuf/joy.pb.h>
 #include <synapse_protobuf/led_array.pb.h>
@@ -42,7 +43,6 @@ enum {
  * topics
  ********************************************************************/
 ZROS_TOPIC_DECLARE(topic_actuators, synapse_msgs_Actuators);
-
 ZROS_TOPIC_DECLARE(topic_imu, synapse_msgs_Imu);
 ZROS_TOPIC_DECLARE(topic_joy, synapse_msgs_Joy);
 ZROS_TOPIC_DECLARE(topic_led_array, synapse_msgs_LEDArray);

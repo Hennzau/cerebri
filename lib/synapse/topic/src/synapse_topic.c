@@ -151,12 +151,9 @@ typedef int msg_handler_t(const struct shell* sh, struct zros_topic* topic, void
 
 int handle_msg(const struct shell* sh, struct zros_topic* topic, msg_handler_t* handler)
 {
-    if (topic == &topic_actuators || topic == &topic_actuators_manual) {
+    if (topic == &topic_actuators) {
         synapse_msgs_Actuators msg = {};
         return handler(sh, topic, &msg, (snprint_t*)&snprint_actuators);
-    } else if (topic == &topic_clock_offset) {
-        synapse_msgs_Time msg = {};
-        return handler(sh, topic, &msg, (snprint_t*)&snprint_time);
     } else if (topic == &topic_status) {
         synapse_msgs_Status msg = {};
         return handler(sh, topic, &msg, (snprint_t*)&snprint_status);

@@ -97,8 +97,6 @@ static int fini(struct context* ctx)
     // close udp socket
     ret = udp_rx_fini(&ctx->udp);
 
-    // close subscriptions
-    zros_sub_fini(&ctx->sub_status);
     return ret;
 };
 
