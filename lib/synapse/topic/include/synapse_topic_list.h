@@ -48,7 +48,6 @@ enum {
  * topics
  ********************************************************************/
 ZROS_TOPIC_DECLARE(topic_actuators, synapse_msgs_Actuators);
-ZROS_TOPIC_DECLARE(topic_actuators_manual, synapse_msgs_Actuators);
 
 ZROS_TOPIC_DECLARE(topic_imu, synapse_msgs_Imu);
 ZROS_TOPIC_DECLARE(topic_joy, synapse_msgs_Joy);

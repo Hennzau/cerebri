@@ -26,7 +26,7 @@ typedef struct _context {
     struct zros_node node;
 
     struct zros_sub sub_joy;
-    struct zros_pub pub_actuators_manual;
+    struct zros_pub pub_actuators;
 
     synapse_msgs_Joy joy;
     synapse_msgs_Actuators actuators_manual;
@@ -41,7 +41,7 @@ static context g_ctx = {
     .joy = synapse_msgs_Joy_init_default,
     .actuators_manual = synapse_msgs_Actuators_init_default,
     .sub_joy = {},
-    .pub_actuators_manual = {},
+    .pub_actuators = {},
     .wheel_radius = CONFIG_CEREBRI_B3RB_WHEEL_RADIUS_MM / 1000.0,
     .max_turn_angle = CONFIG_CEREBRI_B3RB_MAX_TURN_ANGLE_MRAD / 1000.0,
     .max_velocity = CONFIG_CEREBRI_B3RB_MAX_VELOCITY_MM_S / 1000.0,
@@ -51,7 +51,7 @@ static void init(context* ctx)
 {
     zros_node_init(&ctx->node, "b3rb_manual");
     zros_sub_init(&ctx->sub_joy, &ctx->node, &topic_joy, &ctx->joy, 10);
-    zros_pub_init(&ctx->pub_actuators_manual, &ctx->node,
+    zros_pub_init(&ctx->pub_actuators, &ctx->node,
         &topic_actuators, &ctx->actuators_manual);
 }
 
@@ -85,7 +85,7 @@ static void b3rb_manual_entry_point(void* p0, void* p1, void* p2)
         double omega_fwd = ctx->max_velocity * ctx->joy.axes[JOY_AXES_THRUST] / ctx->wheel_radius;
         b3rb_set_actuators(&ctx->actuators_manual, turn_angle, omega_fwd);
 
-        zros_pub_update(&ctx->pub_actuators_manual);
+        zros_pub_update(&ctx->pub_actuators);
     }
 }
 

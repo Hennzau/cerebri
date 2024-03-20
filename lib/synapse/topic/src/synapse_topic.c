@@ -26,12 +26,10 @@ LOG_MODULE_REGISTER(zros_topic);
 
 #define TOPIC_DICTIONARY()                                                     \
     (actuators, &topic_actuators, "actuators"),                                \
-        (actuators_manual, &topic_actuators_manual, "actuators_manual"),       \
-        (clock_offset, &topic_clock_offset, "clock_offset"),                   \
-        (imu, &topic_imu, "imu"),                                              \
-        (joy, &topic_joy, "joy"),                                              \
-        (led_array, &topic_led_array, "led_array"),                            \
-        (status, &topic_status, "status")
+    (imu, &topic_imu, "imu"),                                                  \
+    (joy, &topic_joy, "joy"),                                                  \
+    (led_array, &topic_led_array, "led_array"),                                \
+    (status, &topic_status, "status")
 
 int topic_count_hz(const struct shell* sh, struct zros_topic* topic, void* msg, snprint_t* echo)
 {
