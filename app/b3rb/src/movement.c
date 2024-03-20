@@ -93,20 +93,6 @@ static void b3rb_movement_entry_point(void* p0, void* p1, void* p2)
             zros_sub_update(&ctx->sub_status);
         }
 
-        synapse_msgs_Status_Mode mode = ctx->status.mode;
-
-        int rc = 0;
-        if (mode == synapse_msgs_Status_Mode_MODE_MANUAL) {
-            struct k_poll_event events[] = {
-                *zros_sub_get_event(&ctx->sub_actuators_manual),
-                *zros_sub_get_event(&ctx->sub_actuators_auto),
-            };
-            rc = k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
-            if (rc != 0) {
-                LOG_DBG("not receiving manual/auto actuators");
-            }
-        }
-
         if (zros_sub_update_available(&ctx->sub_actuators_manual)) {
             zros_sub_update(&ctx->sub_actuators_manual);
         }
@@ -115,11 +101,7 @@ static void b3rb_movement_entry_point(void* p0, void* p1, void* p2)
             zros_sub_update(&ctx->sub_actuators_auto);
         }
 
-        // handle modes
-        if (rc < 0) {
-            stop(ctx);
-            LOG_DBG("no data, stopped");
-        } else if (ctx->status.arming != synapse_msgs_Status_Arming_ARMING_ARMED) {
+        if (ctx->status.arming != synapse_msgs_Status_Arming_ARMING_ARMED) {
             stop(ctx);
             LOG_DBG("not armed, stopped");
         } else if (ctx->status.mode == synapse_msgs_Status_Mode_MODE_MANUAL) {
