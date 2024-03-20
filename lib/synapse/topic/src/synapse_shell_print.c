@@ -49,87 +49,6 @@ int snprint_actuators(char* buf, size_t n, synapse_msgs_Actuators* m)
     return offset;
 }
 
-int snprint_altimeter(char* buf, size_t n, synapse_msgs_Altimeter* m)
-{
-    return snprintf_cat(buf, n, "alt: %10.4f m, vel: %10.4f m/s, ref alt: %10.4f m\n",
-        m->vertical_position, m->vertical_velocity, m->vertical_reference);
-}
-
-int snprint_battery_state(char* buf, size_t n, synapse_msgs_BatteryState* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-    offset += snprintf_cat(buf + offset, n - offset, "voltage: %10.4f V, current: %10.4f A\n",
-        m->voltage, m->current);
-    return offset;
-}
-
-int snprint_bezier_curve(char* buf, size_t n, synapse_msgs_BezierCurve* m)
-{
-    size_t offset = 0;
-    for (int i = 0; i < m->x_count; i++) {
-        if (i == 0) {
-            offset += snprintf_cat(buf + offset, n - offset, "x");
-        }
-        offset += snprintf_cat(buf + offset, n - offset, "%10.4f", m->x[i]);
-    }
-    for (int i = 0; i < m->y_count; i++) {
-        if (i == 0) {
-            offset += snprintf_cat(buf + offset, n - offset, "y");
-        }
-        offset += snprintf_cat(buf + offset, n - offset, "%10.4f", m->y[i]);
-    }
-    for (int i = 0; i < m->z_count; i++) {
-        if (i == 0) {
-            offset += snprintf_cat(buf + offset, n - offset, "z");
-        }
-        offset += snprintf_cat(buf + offset, n - offset, "%10.4f", m->z[i]);
-    }
-    for (int i = 0; i < m->yaw_count; i++) {
-        if (i == 0) {
-            offset += snprintf_cat(buf + offset, n - offset, "yaw");
-        }
-        offset += snprintf_cat(buf + offset, n - offset, "%10.4f", m->yaw[i]);
-    }
-    offset += snprintf_cat(buf + offset, n - offset, "time stop: %lld\n", m->time_stop);
-    return offset;
-}
-
-int snprint_bezier_trajectory(char* buf, size_t n, synapse_msgs_BezierTrajectory* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-
-    offset += snprintf_cat(buf + offset, n - offset, "time start: %lld", m->time_start);
-
-    for (int i = 0; i < m->curves_count; i++) {
-        offset += snprintf_cat(buf + offset, n - offset, "curve: %d\n", i);
-        offset += snprint_bezier_curve(buf + offset, n - offset, &m->curves[i]);
-    }
-    return offset;
-}
-int snprint_pixy_vector(char* buf, size_t n, synapse_msgs_PixyVector* m){
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-
-    offset += snprintf(buf + offset, n - offset, "m0_x0: %u\n", m->m0_x0);
-    offset += snprintf(buf + offset, n - offset, "m0_y0: %u\n", m->m0_y0);
-    offset += snprintf(buf + offset, n - offset, "m0_x1: %u\n", m->m0_x1);
-    offset += snprintf(buf + offset, n - offset, "m0_y1: %u\n", m->m0_y1);
-    offset += snprintf(buf + offset, n - offset, "m1_x0: %u\n", m->m1_x0);
-    offset += snprintf(buf + offset, n - offset, "m1_y0: %u\n", m->m1_y0);
-    offset += snprintf(buf + offset, n - offset, "m1_x1: %u\n", m->m1_x1);
-    offset += snprintf(buf + offset, n - offset, "m1_y1: %u\n", m->m1_y1);
-
-    return offset;
-}
-
 int snprint_status(char* buf, size_t n, synapse_msgs_Status* m)
 {
     size_t offset = 0;
@@ -224,56 +143,6 @@ int snprint_ledarray(char* buf, size_t n, synapse_msgs_LEDArray* m)
     return offset;
 }
 
-int snprint_magnetic_field(char* buf, size_t n, synapse_msgs_MagneticField* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-
-    if (m->has_magnetic_field) {
-        offset += snprint_vector3(buf + offset, n - offset, &m->magnetic_field);
-    }
-
-    for (int i = 0; i < m->magnetic_field_covariance_count; i++) {
-        if (i == 0) {
-            offset += snprintf_cat(buf + offset, n - offset, "covariance\n");
-        }
-        offset += snprintf_cat(buf + offset, n - offset, "%10.4f\n", m->magnetic_field_covariance[i]);
-    }
-    return offset;
-}
-
-int snprint_navsatfix(char* buf, size_t n, synapse_msgs_NavSatFix* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-    offset += snprintf_cat(buf + offset, n - offset, "lat: %10.7f deg\n", m->latitude);
-    offset += snprintf_cat(buf + offset, n - offset, "lon: %10.7f deg\n", m->longitude);
-    offset += snprintf_cat(buf + offset, n - offset, "alt: %10.7f m\n", m->altitude);
-    return offset;
-}
-
-int snprint_odometry(char* buf, size_t n, synapse_msgs_Odometry* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-
-    if (m->has_pose) {
-        offset += snprint_pose_with_covariance(buf + offset, n - offset, &m->pose);
-    }
-
-    if (m->has_twist) {
-        offset += snprint_twist_with_covariance(buf + offset, n - offset, &m->twist);
-    }
-    offset += snprintf_cat(buf + offset, n - offset, "child frame: %s\n", m->child_frame_id);
-    return offset;
-}
-
 int snprint_point(char* buf, size_t n, synapse_msgs_Point* m)
 {
     return snprintf_cat(buf, 100, "x: %10.4f y: %10.4f z: %10.4f\n", m->x, m->y, m->z);
@@ -316,17 +185,6 @@ int snprint_quaternion(char* buf, size_t n, synapse_msgs_Quaternion* m)
         m->w, m->x, m->y, m->z);
 }
 
-int snprint_safety(char* buf, size_t n, synapse_msgs_Safety* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-    offset += snprintf_cat(buf + offset, n - offset, "safety: %s\n",
-        safety_str(m->status));
-    return offset;
-}
-
 int snprint_time(char* buf, size_t n, synapse_msgs_Time* m)
 {
     return snprintf_cat(buf, n, "stamp: %lld.%09d\n", m->sec, m->nanosec);
@@ -365,16 +223,6 @@ int snprint_twist_with_covariance(char* buf, size_t n, synapse_msgs_TwistWithCov
 int snprint_vector3(char* buf, size_t n, synapse_msgs_Vector3* m)
 {
     return snprintf_cat(buf, n, "x: %10.4f y: %10.4f z: %10.4f\n", m->x, m->y, m->z);
-}
-
-int snprint_wheel_odometry(char* buf, size_t n, synapse_msgs_WheelOdometry* m)
-{
-    size_t offset = 0;
-    if (m->has_header) {
-        offset += snprint_header(buf + offset, n - offset, &m->header);
-    }
-    offset += snprintf_cat(buf + offset, n - offset, "rotation: %10.4f\n", m->rotation);
-    return offset;
 }
 
 // vi: ts=4 sw=4 et
