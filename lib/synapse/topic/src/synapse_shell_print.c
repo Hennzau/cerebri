@@ -56,7 +56,7 @@ int snprint_status(char* buf, size_t n, synapse_msgs_Status* m)
         offset += snprint_header(buf + offset, n - offset, &m->header);
     }
     offset += snprintf_cat(buf + offset, n - offset,
-        "armed: %s\nmode: %s\n
+        "armed: %s\nmode: %s\n"
         "fuel level: %0.2d\%\npower: %10.2fW\nmessage: %s\njoy: %s\n"
         "request_seq: %10d\nrequest_rejected:%2d\n",
         armed_str(m->arming), mode_str(m->mode), m->fuel_percentage, m->power, m->status_message,
