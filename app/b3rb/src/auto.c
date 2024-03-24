@@ -75,7 +75,7 @@ static void b3rb_auto_entry_point(void* p0, void* p1, void* p2)
         k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
 
         if (zros_sub_update_available(&ctx->sub_road_curve_angle)) {
-            zros_sub_update(&ctx->road_curve_angle);
+            zros_sub_update(&ctx->sub_road_curve_angle);
         }
 
         /*
