@@ -54,7 +54,7 @@ static context g_ctx = {
 static void init(context* ctx)
 {
     zros_node_init(&ctx->node, "b3rb_auto");
-    zros_sub_init(&ctx->sub_road_curve_angle, &ctx->node, &topic_road_curve_angle, &ctx->road_curve_angle);
+    zros_sub_init(&ctx->sub_road_curve_angle, &ctx->node, &topic_road_curve_angle, &ctx->road_curve_angle, 10);
     zros_pub_init(&ctx->pub_actuators, &ctx->node, &topic_actuators_auto, &ctx->actuators);
 }
 
