@@ -10,6 +10,7 @@
 #include <synapse_protobuf/actuators.pb.h>
 #include <synapse_protobuf/imu.pb.h>
 #include <synapse_protobuf/joy.pb.h>
+#include <synapse_protobuf/road_curve_angle.pb.h>
 #include <synapse_protobuf/led_array.pb.h>
 #include <synapse_protobuf/status.pb.h>
 #include <synapse_protobuf/time.pb.h>
@@ -56,8 +57,9 @@ ZROS_TOPIC_DECLARE(topic_actuators_manual, synapse_msgs_Actuators); // Actuators
 ZROS_TOPIC_DECLARE(topic_actuators_auto, synapse_msgs_Actuators); // Actuators from auto mode
 ZROS_TOPIC_DECLARE(topic_actuators, synapse_msgs_Actuators); // Actuators sent to motors (actuate/pwm node)
 
-ZROS_TOPIC_DECLARE(topic_imu, synapse_msgs_Imu); // Actuators received from
+ZROS_TOPIC_DECLARE(topic_imu, synapse_msgs_Imu); // Actuators received from imu sensor
 ZROS_TOPIC_DECLARE(topic_joy, synapse_msgs_Joy);
+ZROS_TOPIC_DECLARE(topic_road_curve_angle, synapse_msgs_RoadCurveAngle);
 ZROS_TOPIC_DECLARE(topic_led_array, synapse_msgs_LEDArray);
 ZROS_TOPIC_DECLARE(topic_status, synapse_msgs_Status);
 

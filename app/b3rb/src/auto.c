@@ -26,8 +26,10 @@ LOG_MODULE_REGISTER(b3rb_auto, CONFIG_CEREBRI_B3RB_LOG_LEVEL);
 typedef struct _context {
     struct zros_node node;
 
+    struct zros_sub sub_road_curve_angle;
     struct zros_pub pub_actuators;
 
+    synapse_msgs_RoadCurveAngle road_curve_angle;
     synapse_msgs_Actuators actuators;
 
     const double wheel_radius;
@@ -38,7 +40,10 @@ typedef struct _context {
 static context g_ctx = {
     .node = {},
 
+    .sub_road_curve_angle = {},
     .pub_actuators = {},
+
+    .road_curve_angle = synapse_msgs_RoadCurveAngle_init_default,
     .actuators = synapse_msgs_Actuators_init_default,
 
     .wheel_radius = CONFIG_CEREBRI_B3RB_WHEEL_RADIUS_MM / 1000.0,
@@ -49,8 +54,8 @@ static context g_ctx = {
 static void init(context* ctx)
 {
     zros_node_init(&ctx->node, "b3rb_auto");
-    zros_pub_init(&ctx->pub_actuators, &ctx->node,
-        &topic_actuators_auto, &ctx->actuators);
+    zros_sub_init(&ctx->sub_road_curve_angle, &ctx->node, &topic_road_curve_angle, &ctx->road_curve_angle);
+    zros_pub_init(&ctx->pub_actuators, &ctx->node, &topic_actuators_auto, &ctx->actuators);
 }
 
 static void b3rb_auto_entry_point(void* p0, void* p1, void* p2)
@@ -63,12 +68,19 @@ static void b3rb_auto_entry_point(void* p0, void* p1, void* p2)
     init(ctx);
 
     struct k_poll_event events[] = {
+        *zros_sub_get_event(&ctx->sub_road_curve_angle),
     };
 
     while (true) {
         k_poll(events, ARRAY_SIZE(events), K_MSEC(1000));
 
-        // compute turn_angle, and angular velocity from joystick
+        if (zros_sub_update_available(&ctx->sub_road_curve_angle)) {
+            zros_sub_update(&ctx->road_curve_angle);
+        }
+
+        /*
+            Compute actuator knowing road curve angle
+        */
 
         zros_pub_update(&ctx->pub_actuators);
     }

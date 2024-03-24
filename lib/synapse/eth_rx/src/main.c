@@ -49,6 +49,7 @@ static struct context g_ctx;
 
 // topic listeners
 TOPIC_LISTENER(joy, synapse_msgs_Joy)
+TOPIC_LISTENER(road_curve_angle, synapse_msgs_RoadCurveAngle)
 
 static TF_Result genericListener(TinyFrame* tf, TF_Msg* msg)
 {
@@ -84,6 +85,10 @@ static int init(struct context* ctx)
         return ret;
 
     ret = TF_AddTypeListener(&ctx->tf, SYNAPSE_JOY_TOPIC, joy_listener);
+    if (ret < 0)
+        return ret;
+
+    ret = TF_AddTypeListener(&ctx->tf, SYNAPSE_ROAD_CURVE_ANGLE_TOPIC, road_curve_angle_listener);
     if (ret < 0)
         return ret;
 

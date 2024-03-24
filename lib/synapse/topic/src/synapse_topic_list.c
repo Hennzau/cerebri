@@ -72,6 +72,7 @@ ZROS_TOPIC_DEFINE(actuators_auto, synapse_msgs_Actuators);
 ZROS_TOPIC_DEFINE(actuators, synapse_msgs_Actuators);
 
 ZROS_TOPIC_DEFINE(status, synapse_msgs_Status);
+ZROS_TOPIC_DEFINE(road_curve_angle, synapse_msgs_RoadCurveAngle);
 ZROS_TOPIC_DEFINE(imu, synapse_msgs_Imu);
 ZROS_TOPIC_DEFINE(joy, synapse_msgs_Joy);
 ZROS_TOPIC_DEFINE(led_array, synapse_msgs_LEDArray);
@@ -82,6 +83,7 @@ static struct zros_topic* topic_list[] = {
     &topic_actuators,
 
     &topic_status,
+    &topic_road_curve_angle,
     &topic_imu,
     &topic_joy,
     &topic_led_array,
