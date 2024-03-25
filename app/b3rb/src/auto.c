@@ -58,6 +58,12 @@ static void init(context* ctx)
     zros_pub_init(&ctx->pub_actuators, &ctx->node, &topic_actuators_auto, &ctx->actuators);
 }
 
+static double compute_velocity (context* ctx, double angle) {
+    ARG_UNUSED(angle);
+
+    return ctx->max_velocity / 2;
+}
+
 static void b3rb_auto_entry_point(void* p0, void* p1, void* p2)
 {
     LOG_INF("init");
@@ -81,6 +87,21 @@ static void b3rb_auto_entry_point(void* p0, void* p1, void* p2)
         /*
             Compute actuator knowing road curve angle
         */
+
+        double turn_angle = 0;
+        double road_curve_angle = ctx->road_curve_angle.angle;
+
+        if (road_curve_angle > ctx->max_turn_angle) {
+            turn_angle = ctx->max_turn_angle;
+        } else if (road_curve_angle < -ctx->max_turn_angle) {
+            turn_angle = -ctx->max_turn_angle;
+        } else {
+            turn_angle = road_curve_angle;
+        }
+
+        double omega_fwd = compute_velocity (ctx, turn_angle);
+
+        b3rb_set_actuators(&ctx->actuators, turn_angle, omega_fwd);
 
         zros_pub_update(&ctx->pub_actuators);
     }
