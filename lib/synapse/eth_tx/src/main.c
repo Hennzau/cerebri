@@ -67,29 +67,6 @@ static void tf_write(TinyFrame* tf, const uint8_t* buf, uint32_t len)
     udp_tx_send(&ctx->udp, buf, len);
 }
 
-static void send_uptime(struct context* ctx)
-{
-    TF_Msg msg;
-    TF_ClearMsg(&msg);
-    uint8_t buf[synapse_msgs_Time_size];
-    pb_ostream_t stream = pb_ostream_from_buffer((pu8)buf, sizeof(buf));
-    int64_t ticks = k_uptime_ticks();
-    int64_t sec = ticks / CONFIG_SYS_CLOCK_TICKS_PER_SEC;
-    int32_t nanosec = (ticks - sec * CONFIG_SYS_CLOCK_TICKS_PER_SEC) * 1e9 / CONFIG_SYS_CLOCK_TICKS_PER_SEC;
-    synapse_msgs_Time message;
-    message.sec = sec;
-    message.nanosec = nanosec;
-    int rc = pb_encode(&stream, synapse_msgs_Time_fields, &message);
-    if (rc) {
-        msg.type = SYNAPSE_UPTIME_TOPIC;
-        msg.data = buf;
-        msg.len = stream.bytes_written;
-        TF_Send(&ctx->tf, &msg);
-    } else {
-        printf("uptime encoding failed: %s\n", PB_GET_ERROR(&stream));
-    }
-}
-
 static int init(struct context* ctx)
 {
     int ret = 0;
@@ -176,7 +153,6 @@ static void run(void* p0, void* p1, void* p2)
         }
 
         if (now - ticks_last_uptime > CONFIG_SYS_CLOCK_TICKS_PER_SEC) {
-            send_uptime(ctx);
             ticks_last_uptime = now;
         }
 
